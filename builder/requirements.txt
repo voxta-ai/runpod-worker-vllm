@@ -1,3 +1,4 @@
 hf_transfer
 runpod==1.4.0
 huggingface-hub
+vllm==0.2.4

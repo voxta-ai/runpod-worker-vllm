@@ -13,7 +13,7 @@ class EngineConfig:
         self.tokenizer = os.getenv('TOKENIZER', self.model_name)
         self.model_base_path = os.getenv('MODEL_BASE_PATH', "/runpod-volume/")
         self.num_gpu_shard = int(os.getenv('NUM_GPU_SHARD', 1))
-        self.use_full_metrics = os.getenv('USE_FULL_METRICS', 'True') == 'True'
+        self.use_full_metrics = os.getenv('USE_FULL_METRICS', 'False') == 'True'
         self.quantization = str(os.getenv('QUANTIZATION', None)).lower()
         self.quantization = self.quantization if self.quantization in ['squeezellm', 'awq'] else None
         self.dtype = "auto" if self.quantization is None else "half"
@@ -53,11 +53,13 @@ sampling_param_types = {
     'best_of': int,
     'presence_penalty': float,
     'frequency_penalty': float,
+    'repetition_penalty': float,
     'temperature': float,
+    'min_p': float,
     'top_p': float,
     'top_k': int,
     'use_beam_search': bool,
-    'stop': str,
+    'stop': [str],
     'ignore_eos': bool,
     'max_tokens': int,
     'logprobs': float,

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import logging
 from typing import Generator
 import runpod
 from utils import validate_and_convert_sampling_params, intialize_llm_engine
@@ -11,6 +12,9 @@ DEFAULT_BATCH_SIZE = int(os.environ.get('DEFAULT_BATCH_SIZE', 10))
 
 # Initialize the vLLM engine
 llm = intialize_llm_engine()
+
+# Avoid logging prompts
+logging.getLogger('async_llm_engine').setLevel(logging.WARNING)
 
 async def handler(job: dict) -> Generator[str, None, None]:
     """
@@ -66,5 +70,5 @@ async def handler(job: dict) -> Generator[str, None, None]:
 runpod.serverless.start({
     "handler": handler,
     "concurrency_modifier": lambda _: int(os.environ.get('CONCURRENCY_MODIFIER', 100)),
-    "return_aggregate_stream": True
+    "return_aggregate_stream": False
 })
