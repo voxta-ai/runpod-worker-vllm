@@ -1,4 +1,4 @@
-git+https://github.com/runpod/runpod-python.git@concurrency-optimization
+git+https://github.com/runpod/runpod-python.git
 
 hf_transfer
 huggingface-hub==0.19.4

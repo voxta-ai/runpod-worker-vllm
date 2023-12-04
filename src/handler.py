@@ -8,6 +8,7 @@ import runpod
 from utils import EngineConfig, validate_and_convert_sampling_params
 from vllm import AsyncLLMEngine, SamplingParams, AsyncEngineArgs, utils
 
+import logging
 
 
 # Load the configuration
@@ -28,6 +29,8 @@ engine_args = AsyncEngineArgs(
 # Create the vLLM asynchronous engine
 llm = AsyncLLMEngine.from_engine_args(engine_args)
 
+# Avoid logging prompts
+logging.getLogger('async_llm_engine').setLevel(logging.WARNING)
 
 # Handler function that will be called by the serverless worker
 async def handler(job: dict) -> Generator[str, None, None]:
@@ -54,5 +57,5 @@ async def handler(job: dict) -> Generator[str, None, None]:
 runpod.serverless.start({
     "handler": handler,
     "concurrency_modifier": lambda _: int(os.environ.get('CONCURRENCY_MODIFIER', 100)),
-    "return_aggregate_stream": True
+    "return_aggregate_stream": False
 })
